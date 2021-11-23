@@ -28,17 +28,19 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "O atributo nome é obrigatório!")
-	@Size(min = 5, max = 100, message = "O atributo nome deve ter no mínimo 05 e no máximo 100 caracteres!")
+	@NotBlank(message = "Digite um nome.")
+	@Size(min = 5, max = 50, message = "Seu nome deve conter de 2 a 50 caracteres.")
 	private String nome;
 
 	@ApiModelProperty(example="email@email.com.br")
-	@NotBlank(message = "O atributo usuário não pode ser vazio!")
-	@Email(message = "O atributo usuário deve ser um email!")
+	@NotBlank(message = "Digite um e-mail.")
+	@Email(message = "Digite um e-mail válido.")
 	private String usuario;
+	
+	private String foto;
 
-	@NotBlank(message = "O atributo senha é obrigatório!")
-	@Size(min = 8, message = "O atributo senha deve ter no mínimo 8 caracteres!")
+	@NotBlank(message = "Digite uma senha.")
+	@Size(min = 8, max = 20, message = "Sua senha deve conter no mínimo 8 caracteres (até 20).")
 	private String senha;
 
 	@Column(name = "dt_nascimento")
@@ -49,10 +51,11 @@ public class Usuario {
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
 
-	public Usuario(long id, String nome, String usuario, String senha, LocalDate dataNascimento) {
+	public Usuario(long id, String nome, String usuario, String foto, String senha, LocalDate dataNascimento) {
 		this.id = id;
 		this.nome = nome;
 		this.usuario = usuario;
+		this.foto = foto;
 		this.senha = senha;
 		this.dataNascimento = dataNascimento;
 	}
@@ -82,6 +85,14 @@ public class Usuario {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
+	}
+	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 	public String getSenha() {
