@@ -35,9 +35,9 @@ public class PostagemController {
 		return ResponseEntity.ok(repository.findAll());
 	}
 	
-	@GetMapping("/porID/{id}")
-	public ResponseEntity<Optional<Postagem>> findById(@PathVariable("id") Long id){
-		return ResponseEntity.ok(repository.findById(id));
+	@GetMapping("/{id}")
+	public ResponseEntity<Postagem> findById(@PathVariable("id") Long id){
+		return ResponseEntity.ok(repository.findById(id).get());
 	}
 	
 	@GetMapping("/porTitulo/{titulo}")
