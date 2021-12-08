@@ -38,7 +38,7 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Usuario> getById(@PathVariable long id) {
+	public ResponseEntity<Usuario> getById(@PathVariable Long id) {
 	        return repository.findById(id)
 		        .map(resp -> ResponseEntity.ok(resp))
 		        .orElse(ResponseEntity.notFound().build());
@@ -58,9 +58,9 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/cadastrar")
-	public ResponseEntity<Usuario> post(@Valid @RequestBody Usuario usuario){
-	        return ResponseEntity.status(HttpStatus.CREATED)
-			        .body(usuarioService.cadastrarUsuario(usuario).get());
+	public ResponseEntity<Usuario> Post(@Valid @RequestBody Usuario usuario){
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(usuarioService.cadastrarUsuario(usuario).get());
 	}
 
 }

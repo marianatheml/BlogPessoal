@@ -42,18 +42,19 @@ public class UsuarioService {
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado.", null);		
 	}	
 	
-	public Optional<UserLoginDTO> logarUsuario(Optional<UserLoginDTO> usuarioLogin) {
-		Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
+	public Optional<UserLoginDTO> logarUsuario(Optional<UserLoginDTO> userLogin) {
+		Optional<Usuario> usuario = usuarioRepository.findByUsuario(userLogin.get().getUsuario());
 
 		if (usuario.isPresent()) {
-			if (compararSenhas(usuarioLogin.get().getSenha(), usuario.get().getSenha())) {
-				usuarioLogin.get().setId(usuario.get().getId());				
-				usuarioLogin.get().setNome(usuario.get().getNome());
-				usuarioLogin.get().setFoto(usuario.get().getFoto());
-				usuarioLogin.get().setSenha(usuario.get().getSenha());
-				usuarioLogin.get().setToken(generatorBasicToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha()));
+			if (compararSenhas(userLogin.get().getSenha(), usuario.get().getSenha())) {
+				userLogin.get().setId(usuario.get().getId());
+				userLogin.get().setNome(usuario.get().getNome());
+				userLogin.get().setFoto(usuario.get().getFoto());
+				userLogin.get().setSenha(usuario.get().getSenha());
+				userLogin.get().setTipo(usuario.get().getTipo());
+				userLogin.get().setToken(generatorBasicToken(userLogin.get().getUsuario(), userLogin.get().getSenha()));
 
-				return usuarioLogin;
+				return userLogin;
 			}
 		}		
 		throw new ResponseStatusException(
@@ -71,8 +72,8 @@ public class UsuarioService {
 		return encoder.matches(senhaDigitada, senhaBanco);		
 	}
 	
-	private String generatorBasicToken(String email, String password) {
-		String structure = email + ":" + password;
+	private String generatorBasicToken(String usuario, String password) {
+		String structure = usuario + ":" + password;
 		byte[] structureBase64 = Base64.encodeBase64(structure.getBytes(Charset.forName("US-ASCII")));
 		return "Basic " + new String(structureBase64);
 	}
