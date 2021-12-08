@@ -26,45 +26,43 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/postagens")
 @CrossOrigin(value = "*", allowedHeaders = "*")
 public class PostagemController {
-	
+
 	@Autowired
 	private PostagemRepository repository;
 
 	@GetMapping
-	public ResponseEntity<List<Postagem>> findAllPostagens(){
+	public ResponseEntity<List<Postagem>> findAllPostagens() {
 		return ResponseEntity.ok(repository.findAll());
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Postagem> findById(@PathVariable("id") Long id){
+	public ResponseEntity<Postagem> findById(@PathVariable("id") long id) {
 		return ResponseEntity.ok(repository.findById(id).get());
 	}
-	
+
 	@GetMapping("/porTitulo/{titulo}")
-	public ResponseEntity<List<Postagem>> GetByTitulo(@PathVariable String titulo){
+	public ResponseEntity<List<Postagem>> GetByTitulo(@PathVariable String titulo) {
 		return ResponseEntity.ok(repository.findAllByTituloContainingIgnoreCase(titulo));
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem){
-	        return ResponseEntity.status(HttpStatus.CREATED)
-			        .body(repository.save(postagem));
+	public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(postagem));
 	}
-	
+
 	@PutMapping
-	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem){
-	        return repository.findById(postagem.getId())
-			        .map(resp -> ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem)))
-			        .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem) {
+		return repository.findById(postagem.getId())
+				.map(resp -> ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem)))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 	}
-	
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable long id) {
-	        Optional<Postagem> post = repository.findById(id);
-	        if(post.isEmpty())
-		        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-	        repository.deleteById(id);				
+	public void delete(@PathVariable Long id) {
+		Optional<Postagem> post = repository.findById(id);
+		if (post.isEmpty())
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		repository.deleteById(id);
 	}
-	
+
 }
