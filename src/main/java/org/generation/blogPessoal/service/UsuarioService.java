@@ -47,13 +47,13 @@ public class UsuarioService {
 
 		if (usuario.isPresent()) {
 			if (compararSenhas(userLogin.get().getSenha(), usuario.get().getSenha())) {
+				userLogin.get().setToken(generatorBasicToken(userLogin.get().getUsuario(), userLogin.get().getSenha()));
 				userLogin.get().setId(usuario.get().getId());
 				userLogin.get().setNome(usuario.get().getNome());
 				userLogin.get().setFoto(usuario.get().getFoto());
-				userLogin.get().setSenha(usuario.get().getSenha());
 				userLogin.get().setTipo(usuario.get().getTipo());
-				userLogin.get().setToken(generatorBasicToken(userLogin.get().getUsuario(), userLogin.get().getSenha()));
-
+				userLogin.get().setSenha(usuario.get().getSenha());
+				
 				return userLogin;
 			}
 		}		
@@ -73,7 +73,7 @@ public class UsuarioService {
 	}
 	
 	private String generatorBasicToken(String usuario, String password) {
-		String structure = usuario + ":" + password;
+		String structure = usuario + ": " + password;
 		byte[] structureBase64 = Base64.encodeBase64(structure.getBytes(Charset.forName("US-ASCII")));
 		return "Basic " + new String(structureBase64);
 	}
